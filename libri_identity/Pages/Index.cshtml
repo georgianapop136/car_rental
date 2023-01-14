@@ -1,0 +1,17 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <img src="~/img/book_home.png" style="width: 350px; height: 320px;"/>
+</div>
+
+<div class="text-center">
+    <h3>Welcome to the most complete used Cars database</h3>
+    <h5>You can:</h5>
+    <p style="margin: 0;"><a asp-page="/Cars/Index">See the whole list</a></p>
+    <p style="margin: 0;"><a asp-page="/Cars/Create">Add your own Cars</a></p>
+    <p style="margin: 0;"><a asp-page="/BookingCRUD/Index">Reserve all the Cars you want</a></p>
+</div>
