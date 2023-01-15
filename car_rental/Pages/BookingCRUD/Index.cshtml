@@ -1,0 +1,64 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model car_rental.Pages.BookingCRUD.IndexModel
+
+@{
+    ViewData["Title"] = "Read - Booking";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1 style="color: lawngreen;">Booking</h1>
+
+<div class="table-responsive">
+    <table class="table table-hover text-center">
+        <thead>
+            <tr>
+                <th>
+                    Start Booking
+                </th>
+                <th>
+                    End Booking
+                </th>
+                <th>
+                    Brand
+                </th>
+               <th>
+                    Customer
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Booking)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Start_Booking)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.End_Booking)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                @if (SignInManager.IsSignedIn(User) && item.Customer == User.Identity.Name)
+                {
+                    <td>
+                        <a asp-page="./Delete" asp-route-id_search="@item.Id_Booking" class="btn btn-danger"><i class='fa fa-remove'></i></a>
+                    </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<p class="text-center">
+    <a asp-page="/Cars/Index">Make a reservation</a>
+</p>

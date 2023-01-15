@@ -1,0 +1,123 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model car_rental.Pages.Cars.IndexModel
+
+@{
+    ViewData["Title"] = "Read - Car";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<style>
+    ::-webkit-input-placeholder {
+        font-style: italic;
+    }
+
+    :-moz-placeholder {
+        font-style: italic;
+    }
+
+    ::-moz-placeholder {
+        font-style: italic;
+    }
+
+    :-ms-input-placeholder {
+        font-style: italic;
+    }
+</style>
+
+<h1 class="text-center" style="color: lawngreen;">ALL OF USED Cars</h1>
+<h6 class="text-center mb-2">Log in and add your used Cars or reserve one</h6>
+<h6 class="text-center mb-4">For more details about the car click on the <u>Info button</u></h6>
+
+
+<div class="table-responsive">
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th>
+                Brand
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Transmission
+            </th>
+
+            <th>
+                Year
+            </th>
+            <th></th>
+            <th>
+                Book
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Car)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            @if (SignInManager.IsSignedIn(User) && User.Identity.Name == item.Name_Customer)
+            {
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info"><i class='fas fa-info-circle'></i></a> |
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class='far fa-edit'></i></a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class='fa fa-remove'></i></a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info"><i class='fas fa-info-circle'></i></a>
+                </td>
+            }
+        <td>
+            @if (@item.State == 0)
+            {
+                <a asp-page="/BookingCRUD/Create" asp-route-id_car="@item.Id" class="btn btn-success"><i class='fa fa-check'></i></a>
+            }
+            else
+            {
+                <p style="color: red">Already booked</p>
+            }
+        </td>
+        </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+<p class="text-center">
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form method="post" class="text-center">
+    <h5>Search a car</h5>
+    <input type="text" asp-for="Brand_filter" placeholder="Brand of the car" />
+    <input type="text" asp-for="Model_filter" placeholder="Model of the car" />
+    <input type="text" asp-for="Location_filter" placeholder="Location of the car" />
+    <input type="text" asp-for="Customer_filter" placeholder="Email of the customer" />
+    <div class="mt-2">
+        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+    </div>
+</form>
